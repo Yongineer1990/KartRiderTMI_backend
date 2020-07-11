@@ -4,7 +4,7 @@ class GameUser(models.Model):
 
     access_id = models.CharField(max_length = 50)
     nickname  = models.CharField(max_length = 50)
-    
+
     class Meta:
         db_table = "game_users"
 
@@ -24,10 +24,10 @@ class UserPageHit(models.Model):
 
 class Comment(models.Model):
 
-    comment = models.TextField() 
+    comment = models.TextField()
     from_id = models.ForeignKey("GameUser", on_delete = models.CASCADE, related_name = "to_id")
     to_id   = models.ForeignKey("GameUser", on_delete = models.CASCADE, related_name = "from_id")
-    
+
     class Meta:
         db_table = "comments"
 
@@ -39,7 +39,7 @@ class UserTrackRecord(models.Model):
     cumul_dist = models.TextField()
     game_user  = models.ForeignKey("GameUser", on_delete = models.CASCADE)
     track      = models.ForeignKey("metadata.Track", on_delete = models.CASCADE)
-    
+
     class Meta:
         db_table = "user_track_records"
 
@@ -69,7 +69,7 @@ class UserKart(models.Model):
 class SpeedType(models.Model):
 
     name = models.CharField(max_length = 50)
-        
+
     class Meta:
         db_table = "speed_types"
 
@@ -79,7 +79,7 @@ class SpeedType(models.Model):
 class TeamType(models.Model):
 
     name = models.CharField(max_length = 50)
-        
+
     class Meta:
         db_table = "team_types"
 
@@ -91,7 +91,6 @@ class Detail(models.Model):
     play_cnt       = models.IntegerField()
     win_cnt        = models.IntegerField()
     retire_pct     = models.DecimalField(max_digits = 10, decimal_places = 2)
-    most_mode      = models.CharField(max_length = 50)
     rank_avg_50    = models.DecimalField(max_digits = 10, decimal_places = 2)
     rank_avg_500   = models.DecimalField(max_digits = 10, decimal_places = 2)
     rank_list_50   = models.CharField(max_length = 300)
@@ -117,6 +116,6 @@ class Ranking(models.Model):
     game_user   = models.OneToOneField("GameUser", on_delete = models.CASCADE)
     speed_type  = models.ForeignKey("SpeedType", on_delete = models.SET_NULL, null = True)
     team_type   = models.ForeignKey("TeamType", on_delete = models.SET_NULL, null = True)
-    
+
     class Meta:
         db_table = "rankings"
