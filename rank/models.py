@@ -2,8 +2,10 @@ from django.db import models
 
 class GameUser(models.Model):
 
-    access_id = models.CharField(max_length = 50)
-    nickname  = models.CharField(max_length = 50)
+    access_id   = models.CharField(max_length = 50)
+    nickname    = models.CharField(max_length = 50)
+    team_id     = models.ForeignKey('TeamType', on_delete = models.PROTECT)
+    rank        = models.IntegerField()
 
     class Meta:
         db_table = "game_users"
@@ -98,7 +100,6 @@ class Detail(models.Model):
     game_user      = models.OneToOneField("GameUser", on_delete = models.CASCADE)
     character      = models.ForeignKey("metadata.Character", on_delete = models.SET_NULL, null = True)
     team_type      = models.ForeignKey("TeamType", on_delete = models.SET_NULL, null = True)
-    speed_type     = models.ForeignKey("SpeedType", on_delete = models.SET_NULL, null = True)
 
     class Meta:
         db_table = "details"
@@ -106,15 +107,14 @@ class Detail(models.Model):
 class Ranking(models.Model):
 
     rank        = models.IntegerField()
-    rank_diff   = models.IntegerField()
+    rank_diff   = models.IntegerField(null=True)
     cumul_point = models.IntegerField()
     point_get   = models.IntegerField()
     win_pct     = models.DecimalField(max_digits = 10, decimal_places = 2)
     retire_pct  = models.DecimalField(max_digits = 10, decimal_places = 2)
     play_cnt    = models.IntegerField()
-    avg_rank    = models.IntegerField()
+    avg_rank    = models.IntegerField(null=True)
     game_user   = models.OneToOneField("GameUser", on_delete = models.CASCADE)
-    speed_type  = models.ForeignKey("SpeedType", on_delete = models.SET_NULL, null = True)
     team_type   = models.ForeignKey("TeamType", on_delete = models.SET_NULL, null = True)
 
     class Meta:
