@@ -1,4 +1,5 @@
 from django.db import models
+from rank.models import GameUser
 
 class UserMatch(models.Model):
 
@@ -8,7 +9,7 @@ class UserMatch(models.Model):
     kart_name       = models.CharField(max_length = 50)
     lap_time        = models.CharField(max_length = 50)
     match_id_list   = models.TextField()
-    game_user       = models.OneToOneField("rank.GameUsers", on_delete = models.CASCADE)
+    game_user       = models.OneToOneField(GameUser, on_delete = models.CASCADE)
 
     class Meta:
         db_table    = "user_matches"
