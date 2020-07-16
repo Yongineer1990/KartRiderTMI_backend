@@ -10,7 +10,7 @@ from config.settings import (
     ALGORITHM
 )
 
-from .models import Users
+from .models import User
 from .utils import login_decorator
 
 KAKAO_API = 'https://kapi.kakao.com/v2/user/me'
@@ -27,9 +27,8 @@ class SocialLoginView(View):
             kakao_id        = profile['properties']['nickname']
             kakao_picture   = profile['properties']['profile_image']
 
-            if Users.objects.filter(email = kakao_email).exists():
-                token = jwt.encode({'email' : kakao_email}, SECRET_KEY, algorithm=ALGORITHM)
-                token = token.decode('utf-8')
+            if User.objects.filter(email = kakao_email).exists():
+                token = jwt.encode({'email' : kakao_email}, SECRET_KEY, algorithm=ALGORITHM).decode('utf-8')
                 return JsonResponse({
                     'access_token'      : token,
                     'nickname'          : kakao_id,
@@ -37,7 +36,7 @@ class SocialLoginView(View):
                     'email'             : kakao_email
                 }, status=200)
 
-            Users(
+            User(
                 email           = kakao_email,
                 kakao_id        = kakao_id,
                 picture         = kakao_picture,

@@ -1,7 +1,7 @@
 from django.db import models
 from rank.models import GameUser
 
-class Users(models.Model):
+class User(models.Model):
 
     kakao_id  = models.CharField(max_length = 50, null = True)
     email     = models.EmailField(max_length = 200)

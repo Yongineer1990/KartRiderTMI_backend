@@ -9,7 +9,7 @@ from config.settings import (
     ALGORITHM
 )
 
-from .models import Users
+from .models import User
 
 def login_decorator(func):
     def wrapper(self, request, *args, **kwargs):
@@ -17,8 +17,8 @@ def login_decorator(func):
 
         if token:
             try:
-                payload             = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
-                user_info           = Users.objects.get(email=payload['email'])
+                payload             = jwt.decode(token, SECRET_KEY, algorithm=ALGORITHM)
+                user_info           = User.objects.get(email=payload['email'])
                 request.userinfo    = user_info
 
                 return func(self, request, *args, **kwargs)
@@ -26,7 +26,7 @@ def login_decorator(func):
             except jwt.exceptions.DecodeError:
                 return JsonResponse({'message' : 'INVALID_TOKEN'}, status=400)
 
-            except Users.DoesNotExist:
+            except User.DoesNotExist:
                 return JsonResponse({'message' : 'ACCOUNT_DOES_NOT_EXIST'}, status=400)
 
         return JsonResponse({'message' : 'LOGIN_REQUIRED'}, status=401)
