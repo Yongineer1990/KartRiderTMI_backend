@@ -4,7 +4,7 @@ class GameUser(models.Model):
 
     access_id   = models.CharField(max_length = 50)
     nickname    = models.CharField(max_length = 50)
-    team_id     = models.ForeignKey('TeamType', on_delete = models.PROTECT)
+    team        = models.ForeignKey('TeamType', on_delete = models.PROTECT)
     rank        = models.IntegerField()
 
     class Meta:
@@ -27,8 +27,8 @@ class UserPageHit(models.Model):
 class Comment(models.Model):
 
     comment = models.TextField()
-    from_id = models.ForeignKey("GameUser", on_delete = models.CASCADE, related_name = "to_id")
-    to_id   = models.ForeignKey("GameUser", on_delete = models.CASCADE, related_name = "from_id")
+    from = models.ForeignKey("GameUser", on_delete = models.CASCADE, related_name = "to_id")
+    to   = models.ForeignKey("GameUser", on_delete = models.CASCADE, related_name = "from_id")
 
     class Meta:
         db_table = "comments"
@@ -48,10 +48,10 @@ class UserTrackRecord(models.Model):
 class UserTrackInfo(models.Model):
 
     play_cnt   = models.IntegerField()
-    win_ratio  = models.IntegerField()
+    win_ratio  = models.DecimalField(max_digits=10, decimal_places=2)
     best_lap   = models.CharField(max_length = 50)
-    game_user  = models.OneToOneField("GameUser", on_delete = models.CASCADE)
-    track      = models.OneToOneField("metadata.Track", on_delete = models.CASCADE)
+    game_user  = models.ForeignKey("GameUser", on_delete = models.CASCADE)
+    track      = models.ForeignKey("metadata.Track", on_delete = models.CASCADE)
 
     class Meta:
         db_table = "user_track_info"
@@ -59,11 +59,11 @@ class UserTrackInfo(models.Model):
 class UserKart(models.Model):
 
     play_cnt      = models.IntegerField()
-    win_ratio     = models.IntegerField()
-    retire_ratio  = models.IntegerField()
+    win_ratio     = models.DecimalField(max_digits=10, decimal_places=2)
+    retire_ratio  = models.DecimalField(max_digits=10, decimal_places=2)
     track_history = models.TextField()
-    game_user     = models.OneToOneField("GameUser", on_delete = models.CASCADE)
-    kart          = models.OneToOneField("metadata.Kart", on_delete = models.CASCADE)
+    game_user     = models.ForeignKey("GameUser", on_delete = models.CASCADE)
+    kart          = models.ForeignKey("metadata.Kart", on_delete = models.CASCADE)
 
     class Meta:
         db_table = "user_kart"
@@ -106,7 +106,7 @@ class Detail(models.Model):
 
 class Ranking(models.Model):
 
-    rank        = models.IntegerField()
+    rank        = models.IntegerField(null=True)
     rank_diff   = models.IntegerField(null=True)
     cumul_point = models.IntegerField()
     point_get   = models.IntegerField()
