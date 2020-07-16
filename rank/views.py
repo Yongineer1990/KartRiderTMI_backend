@@ -8,7 +8,9 @@ from django.http import (
 
 from .models import (
     GameUser,
-    Comment
+    Comment,
+    Detail,
+    UserPageHit
 )
 from user.utils import login_decorator
 
@@ -43,3 +45,44 @@ class CommentView(View):
 
         except KeyError:
             return JsonResponse({'Message' : 'INVALID_KEYS'}, status=400)
+
+class RankDetailView(View):
+    def get(self, request, access_id):
+        try:
+            gameuser = GameUser.objects.get(access_id=access_id)
+            if UserPageHit.objects.filter(game_user=gameuser).exists():
+                countview           = UserPageHit.objects.get(game_user=gameuser)
+                countview.count     += 1
+                countview.save()
+            else:
+                UserPageHit.objects.create(
+                    count=1,
+                    game_user=gameuser
+                )
+
+            gameuser = GameUser.objects.select_related('userpagehit', 'detail').get(access_id=access_id)
+            detail      = gameuser.detail
+            pageview    = gameuser.userpagehit
+
+            win_ratio   = round(detail.win_cnt / detail.play_cnt, 2)
+
+            return JsonResponse({
+                'character' : {
+                    'id'    : detail.character.id,
+                    'name'  : detail.character.name,
+                    'key'   : detail.character.key,
+                    'img'   : detail.character.url
+                },
+                'pageview'      : pageview.count,
+                'win_ratio'     : win_ratio,
+                'retire_ratio'  : float(detail.retire_pct),
+                'rank_avg_500'  : float(detail.rank_avg_500),
+                'rank_avg_50'   : float(detail.rank_avg_50),
+                'rank_list_50'  : eval(detail.rank_list_50)
+            }, status=200)
+
+        except KeyError:
+            return JsonResponse({'Message' : 'INVALID_KEYS'}, status=400)
+
+        except GameUser.DoesNotExist:
+            return HttpResponse(status=400)

@@ -13,6 +13,8 @@ from unittest.mock import (
 from .models import (
     GameUser,
     Comment,
+    Detail,
+    UserPageHit
 )
 from user.models import Users
 from config.settings import (
@@ -95,3 +97,25 @@ class CommentTest(TestCase):
         response = client.get(f'/rank/comment/wrong_id', **headers)
 
         self.assertEqual(response.status_code, 400)
+
+class RankDetailTest(TestCase):
+    def test_get_detail_pass(self):
+        client = Client()
+        access_id = GameUser.objects.get(id=1).access_id
+        headers = {
+            'content_type' : 'application/json'
+        }
+        response = client.get(f'/rank/detail/{access_id}',**headers)
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_detail_fail(self):
+        client = Client()
+        access_id = 'Wrong ID'
+        headers = {
+            'content_type' : 'application/json'
+        }
+        response = client.get(f'/rank/detail/{access_id}',**headers)
+
+        self.assertEqual(response.status_code, 400)
+
