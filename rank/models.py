@@ -4,8 +4,8 @@ class GameUser(models.Model):
 
     access_id   = models.CharField(max_length = 50)
     nickname    = models.CharField(max_length = 50)
-    team        = models.ForeignKey('TeamType', on_delete = models.PROTECT)
-    rank        = models.IntegerField()
+    team        = models.ForeignKey('TeamType', on_delete = models.PROTECT, null=True)
+    rank        = models.IntegerField(null=True)
 
     class Meta:
         db_table = "game_users"
@@ -27,8 +27,8 @@ class UserPageHit(models.Model):
 class Comment(models.Model):
 
     comment = models.TextField()
-    from = models.ForeignKey("GameUser", on_delete = models.CASCADE, related_name = "to_id")
-    to   = models.ForeignKey("GameUser", on_delete = models.CASCADE, related_name = "from_id")
+    from_to = models.ForeignKey("GameUser", on_delete = models.CASCADE, related_name = "to_from")
+    to_from = models.ForeignKey("GameUser", on_delete = models.CASCADE, related_name = "from_to")
 
     class Meta:
         db_table = "comments"
@@ -41,6 +41,7 @@ class UserTrackRecord(models.Model):
     cumul_dist = models.TextField()
     game_user  = models.ForeignKey("GameUser", on_delete = models.CASCADE)
     track      = models.ForeignKey("metadata.Track", on_delete = models.CASCADE)
+    team_type      = models.ForeignKey("TeamType", on_delete = models.SET_NULL, null = True)
 
     class Meta:
         db_table = "user_track_records"
@@ -52,6 +53,7 @@ class UserTrackInfo(models.Model):
     best_lap   = models.CharField(max_length = 50)
     game_user  = models.ForeignKey("GameUser", on_delete = models.CASCADE)
     track      = models.ForeignKey("metadata.Track", on_delete = models.CASCADE)
+    team_type      = models.ForeignKey("TeamType", on_delete = models.SET_NULL, null = True)
 
     class Meta:
         db_table = "user_track_info"
@@ -64,6 +66,7 @@ class UserKart(models.Model):
     track_history = models.TextField()
     game_user     = models.ForeignKey("GameUser", on_delete = models.CASCADE)
     kart          = models.ForeignKey("metadata.Kart", on_delete = models.CASCADE)
+    team_type      = models.ForeignKey("TeamType", on_delete = models.SET_NULL, null = True)
 
     class Meta:
         db_table = "user_kart"
