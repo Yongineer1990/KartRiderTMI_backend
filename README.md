@@ -24,6 +24,7 @@
 - Mysql
 - CORS headers
 - AWS : EC2, RDS, S3
+- Docker
 - Git Rebase
 
 ## Modeling
