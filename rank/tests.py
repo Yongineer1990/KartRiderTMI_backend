@@ -71,7 +71,7 @@ class CommentTest(TestCase):
         testsuit    = {"comment" : "test"}
         headers     = {
             'HTTP_Authorization' : '',
-            'content_type' : 'application/json'
+            'content_type' : 'text/html'
         }
         response    = client.post(f'/rank/comment/{to_user}', json.dumps(testsuit), **headers)
         self.assertEqual(response.status_code, 401)
