@@ -2,8 +2,7 @@
 
 국내 최대 게임회사인 넥슨의 오랜기간 사랑받는 캐쥬얼 레이싱 장르인 카트라이더의 전적 정보를 제공하는 [Kartrider TMI](https://tmi.nexon.com/kart)를 클론하는 프로젝트입니다. 공식 홈페이지와는 다르게 소셜 로그인 기능이 없어 클론하지 않고 직접 개발하였으며 추가적으로 소셜계정과 실제 카트라이더 유저의 계정을 연동하는 기능도 추가하였습니다. 개발 인원은 총 5명이며 백엔드 3명 프론트엔드 2명으로 구성되었으며 여담으로 게임회사 출신이 저 포함 3명이나 되는 팀이었습니다.
 
-- [Backend github](https://github.com/wecode-bootcamp-korea/9-5dragon-backend)
-- [Frontend github](https://github.com/wecode-bootcamp-korea/9-5dragon-frontend)
+- 프론트엔드의 깃허브는[여기](https://github.com/wecode-bootcamp-korea/9-5dragon-frontend)를 참고해주세요 
 
 ## Demo
 [![](https://images.velog.io/images/yongineer1990/post/87664e61-d90c-469b-8678-24f42405b1e6/image.png)*동영상 보기*](https://youtu.be/Av_p4sCT4Wg)
@@ -24,6 +23,7 @@
 - Mysql
 - CORS headers
 - AWS : EC2, RDS, S3
+- Docker
 - Git Rebase
 
 ## Modeling
